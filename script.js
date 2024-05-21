@@ -62,26 +62,19 @@ function render() {
             </tr>
         </thead>
         <tbody>
+            ${tasks.map((task, index) => `
+                <tr>
+                    <td>${task.name}</td>
+                    <td>${task.description}</td>
+                    <td>${task.deadline}</td>
+                    <td>
+                        <button onclick="markComplete(${index})">Complete</button>
+                        <button class="remove" onclick="removeTask(${index})">Remove</button>
+                    </td>
+                </tr>
+            `).join('')}
         </tbody>
     `;
-
-    const tbody = taskTable.querySelector('tbody');
-
-    tasks.forEach((task, index) => {
-        const row = document.createElement('tr');
-
-        row.innerHTML = `
-            <td>${task.name}</td>
-            <td>${task.description}</td>
-            <td>${task.deadline}</td>
-            <td>
-                <button onclick="markComplete(${index})">Complete</button>
-                <button class="remove" onclick="removeTask(${index})">Remove</button>
-            </td>
-        `;
-
-        tbody.appendChild(row);
-    });
 }
 
 // Function to initialize the table
