@@ -17,32 +17,40 @@ console.log(taskForm);
 console.log(taskTable);
 
 // Section 4: Event Listeners
-taskForm.addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent form from submitting normally
+taskForm.addEventListener('submit', handleSubmission);
 
-    // Get form values
+// Function to handle form submissions
+function handleSubmission(event) {
+    event.preventDefault();
+
+    // Get form input values
     const taskName = document.getElementById('taskName').value;
     const taskDescription = document.getElementById('taskDescription').value;
     const taskDeadline = document.getElementById('taskDeadline').value;
 
-    // Add new task to the tasks array
-    const newTask = {
+    // Validate input fields
+    if (!taskName || !taskDeadline) {
+        alert('Task name and deadline are required!');
+        return;
+    }
+
+    // Update the tasks array
+    tasks.push({
         name: taskName,
         description: taskDescription,
         deadline: taskDeadline,
         completed: false
-    };
-    tasks.push(newTask);
+    });
 
     // Clear form
     taskForm.reset();
 
     // Render tasks
-    renderTasks();
-});
+    render();
+}
 
-// Section 5: Functions
-function renderTasks() {
+// Function to render tasks in the table
+function render() {
     // Clear current table content
     taskTable.innerHTML = `
         <thead>
@@ -76,12 +84,24 @@ function renderTasks() {
     });
 }
 
-function markComplete(index) {
-    tasks[index].completed = !tasks[index].completed;
-    renderTasks();
+// Function to initialize the table
+function init() {
+    taskTable.innerHTML = ''; // Clear the table
+    tasks = []; // Reset the tasks array
+    render(); // Call the render function
 }
 
+// Mark task as complete
+function markComplete(index) {
+    tasks[index].completed = !tasks[index].completed;
+    render();
+}
+
+// Remove task
 function removeTask(index) {
     tasks.splice(index, 1);
-    renderTasks();
+    render();
 }
+
+// Initialize the app
+init();
